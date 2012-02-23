@@ -613,6 +613,13 @@ RedisClient.prototype.send_command = function (command, args, callback) {
         throw new Error("First argument to send_command must be the command name string, not " + typeof command);
     }
 
+	// Fix "sub"/"psub" commands
+	if (command === "sub")
+		command = "subscribe";
+		
+	if (command === "psub")
+		command = "psubscribe";
+
     if (Array.isArray(args)) {
         if (typeof callback === "function") {
             // probably the fastest way:
